@@ -11,7 +11,7 @@
             <li class="nav-item">
                 <a class="nav-link  {{ request()->routeIs('dashboard.*') ? 'active' : '' }}" href="#">
                     <span data-feather="file" class="align-text-bottom"></span>
-                    Jabatan
+                    Jabatan / Posisi
                 </a>
             </li>
             <li class="nav-item">
