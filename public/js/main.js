@@ -10,3 +10,7 @@ window.addEventListener("showToast", (event) => {
     if (event.detail.success) data["colorClass"] = toast.TOAST_SUCCESS;
     toast.show(data);
 });
+
+window.addEventListener("redirect", (event) => {
+    window.location.assign(event.detail.url);
+});

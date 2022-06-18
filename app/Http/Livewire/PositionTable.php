@@ -20,6 +20,7 @@ final class PositionTable extends PowerGridComponent
             parent::getListeners(),
             [
                 'bulkCheckedDelete',
+                'bulkCheckedEdit'
             ]
         );
     }
@@ -30,7 +31,11 @@ final class PositionTable extends PowerGridComponent
             Button::add('bulk-checked')
                 ->caption(__('Hapus'))
                 ->class('btn btn-danger border-0')
-                ->emit('bulkCheckedDelete', [])
+                ->emit('bulkCheckedDelete', []),
+            Button::add('bulk-edit-checked')
+                ->caption(__('Edit'))
+                ->class('btn btn-success border-0')
+                ->emit('bulkCheckedEdit', []),
         ];
     }
 
@@ -48,6 +53,20 @@ final class PositionTable extends PowerGridComponent
             } catch (\Illuminate\Database\QueryException $ex) {
                 $this->dispatchBrowserEvent('showToast', ['success' => false, 'message' => 'Data gagal dihapus, kemungkinan ada data lain yang menggunakan data tersebut.']);
             }
+        }
+    }
+
+    public function bulkCheckedEdit()
+    {
+        if (auth()->check()) {
+            $ids = $this->checkedValues();
+
+            if (!$ids)
+                return $this->dispatchBrowserEvent('showToast', ['success' => false, 'message' => 'Pilih data yang ingin diedit terlebih dahulu.']);
+            // sampai sini, karena tidak ada internet untuk menggunakan cdn alphinejs
+            $ids = join('-', $ids);
+            // return redirect(route('positions.edit', ['ids' => $ids])); // tidak berfungsi/menredirect
+            return $this->dispatchBrowserEvent('redirect', ['url' => route('positions.edit', ['ids' => $ids])]);
         }
     }
 

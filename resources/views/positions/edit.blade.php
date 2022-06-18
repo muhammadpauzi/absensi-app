@@ -14,7 +14,7 @@
 @section('content')
 <div class="row">
     <div class="col-md-7">
-        <livewire:position-create-form />
+        <livewire:position-edit-form :positions="$positions" />
     </div>
 </div>
 @endsection

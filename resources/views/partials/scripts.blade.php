@@ -5,6 +5,10 @@
     integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE" crossorigin="anonymous">
 </script>
 
+<script>
+    feather.replace({ 'aria-hidden': 'true' })
+</script>
+
 {{-- Main JS --}}
 <script type="module" src="{{ asset('js/main.js') }}"></script>
 {{-- Livewire JS --}}

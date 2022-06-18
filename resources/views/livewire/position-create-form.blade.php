@@ -25,10 +25,12 @@
         @endforeach
 
         <div class="d-flex justify-content-between align-items-center">
-            <button class="btn btn-primary">Simpan</button>
-            <button class="btn btn-light" type="button" wire:click="addPositionInput"
-                wire:loading.attr="disabled">Tambah
-                Input</button>
+            <button class="btn btn-primary">
+                Simpan
+            </button>
+            <button class="btn btn-light" type="button" wire:click="addPositionInput" wire:loading.attr="disabled">
+                Tambah Input
+            </button>
         </div>
     </form>
 </div>
