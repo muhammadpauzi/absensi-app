@@ -15,7 +15,7 @@ class PositionSeeder extends Seeder
      */
     public function run()
     {
-        Position::factory(4)->createMany([
+        Position::factory(1)->createMany([
             ["name" => "Pegawai \"Biasa\""],
             ["name" => "Manager"],
             ["name" => "Direktur"],

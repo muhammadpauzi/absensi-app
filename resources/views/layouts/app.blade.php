@@ -22,9 +22,11 @@
                         This week
                     </button>
                 </div> --}}
-                <div>
-                    @yield('content')
-                </div>
+                @yield('buttons')
+            </div>
+
+            <div class="py-4">
+                @yield('content')
             </div>
         </main>
     </div>

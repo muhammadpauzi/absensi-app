@@ -9,13 +9,14 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link  {{ request()->routeIs('dashboard.*') ? 'active' : '' }}" href="#">
+                <a class="nav-link {{ request()->routeIs('positions.*') ? 'active' : '' }}"
+                    href="{{ route('positions.index') }}">
                     <span data-feather="file" class="align-text-bottom"></span>
                     Jabatan / Posisi
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link  {{ request()->routeIs('dashboard.*') ? 'active' : '' }}" href="#">
+                <a class="nav-link {{ request()->routeIs('dashboard.*') ? 'active' : '' }}" href="#">
                     <span data-feather="file" class="align-text-bottom"></span>
                     Karyawaan
                 </a>
