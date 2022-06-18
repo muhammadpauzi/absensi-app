@@ -30,7 +30,6 @@ class PositionEditForm extends Component
         foreach ($positions as $position) {
             $affected += Position::find($position['id'])->update(['name' => $position['name']]);
         }
-
         $message = $affected === 0 ? "Tidak ada data jabatan yang diubah." : "Ada $affected data jabatan yang berhasil diedit.";
         redirect()->route('positions.index')->with('success', $message);
     }
