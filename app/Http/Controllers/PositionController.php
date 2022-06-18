@@ -12,4 +12,11 @@ class PositionController extends Controller
             "title" => "Jabatan / Posisi"
         ]);
     }
+
+    public function create()
+    {
+        return view('positions.create', [
+            "title" => "Tambah Data Jabatan / Posisi"
+        ]);
+    }
 }

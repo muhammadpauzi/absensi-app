@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@push('style')
+@powerGridStyles
+@endpush
+
 @section('buttons')
 <div class="btn-toolbar mb-2 mb-md-0">
     <div class="btn-group me-2">
@@ -7,7 +11,7 @@
         <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
     </div>
     <div>
-        <button type="button" class="btn btn-sm btn-primary">Tambah Data Jabatan</button>
+        <a href="{{ route('positions.create') }}" class="btn btn-sm btn-primary">Tambah Data Jabatan</a>
     </div>
 </div>
 @endsection
@@ -19,3 +23,7 @@
 
 <livewire:position-table />
 @endsection
+
+@push('script')
+@powerGridScripts
+@endpush

@@ -22,7 +22,7 @@ use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 Route::middleware('auth')->group(function () {
     Route::middleware('role:admin,operator')->group(function () {
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
-        Route::resource('/positions', PositionController::class)->only(['index', 'destroy', 'update']);
+        Route::resource('/positions', PositionController::class)->only(['index', 'create', 'update']);
     });
 
     Route::middleware('role:user')->name('home.')->group(function () {

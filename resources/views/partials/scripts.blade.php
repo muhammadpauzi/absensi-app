@@ -9,4 +9,3 @@
 <script type="module" src="{{ asset('js/main.js') }}"></script>
 {{-- Livewire JS --}}
 @livewireScripts
-@powerGridScripts
