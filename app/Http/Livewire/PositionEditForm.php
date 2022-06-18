@@ -31,8 +31,11 @@ class PositionEditForm extends Component
             $affected += Position::find($position['id'])->update(['name' => $position['name']]);
         }
 
-        $message = $affected === 0 ? "Tidak ada data jabatan yang diubah." : "Ada $affected data jabatan yang berhasil diedit.";
-        redirect()->route('positions.index')->with('success', $message);
+        $message = $affected === 0 ?
+            "Tidak ada data jabatan yang diubah." :
+            "Ada $affected data jabatan yang berhasil diedit.";
+
+        return redirect()->route('positions.index')->with('success', $message);
     }
 
     public function render()
