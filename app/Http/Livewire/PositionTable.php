@@ -88,7 +88,7 @@ final class PositionTable extends PowerGridComponent
      */
     public function datasource(): Builder
     {
-        return Position::query();
+        return Position::query()->latest();
     }
 
     /*

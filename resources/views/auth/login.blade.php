@@ -24,7 +24,7 @@
             </div>
 
             <div class="form-check mb-3">
-                <input class="form-check-input" type="checkbox" value="" id="flexCheckRemember">
+                <input class="form-check-input" type="checkbox" name="remember" id="flexCheckRemember">
                 <label class="form-check-label" for="flexCheckRemember">
                     Ingatkan Saya di Perangkat ini
                 </label>
