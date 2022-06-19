@@ -85,7 +85,8 @@ return [
     |
     */
 
-    'alpinejs_cdn' => 'https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js',
+    // 'alpinejs_cdn' => 'https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js',
+    'alpinejs_cdn' => '/alpinejs/alpinejs3.10.2.min.js',
 
     /*
     |--------------------------------------------------------------------------

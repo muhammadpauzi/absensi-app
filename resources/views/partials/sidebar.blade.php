@@ -16,7 +16,8 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link {{ request()->routeIs('dashboard.*') ? 'active' : '' }}" href="#">
+                <a class="nav-link {{ request()->routeIs('employees.*') ? 'active' : '' }}"
+                    href="{{ route('employees.index') }}">
                     <span data-feather="users" class="align-text-bottom"></span>
                     Karyawaan
                 </a>
