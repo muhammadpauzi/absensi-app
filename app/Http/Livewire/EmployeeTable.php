@@ -17,6 +17,7 @@ final class EmployeeTable extends PowerGridComponent
 
     //Table sort field
     public string $sortField = 'users.created_at';
+    public string $sortDirection = 'desc';
 
     protected function getListeners()
     {

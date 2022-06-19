@@ -14,3 +14,10 @@ window.addEventListener("showToast", (event) => {
 window.addEventListener("redirect", (event) => {
     window.location.assign(event.detail.url);
 });
+
+window.addEventListener("livewire-scroll", (event) => {
+    window.scrollTo({
+        top: event.detail.top,
+        behavior: "smooth",
+    });
+});
