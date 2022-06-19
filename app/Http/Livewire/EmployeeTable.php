@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Position;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Support\Carbon;
@@ -118,7 +119,8 @@ final class EmployeeTable extends PowerGridComponent
     {
         return User::query()
             ->join('roles', 'users.role_id', '=', 'roles.id')
-            ->select('users.*', 'roles.name as role');
+            ->join('positions', 'users.position_id', '=', 'positions.id')
+            ->select('users.*', 'roles.name as role', 'positions.name as position');
     }
 
     /*
@@ -156,6 +158,9 @@ final class EmployeeTable extends PowerGridComponent
             ->addColumn('phone')
             ->addColumn('role', function (User $model) {
                 return ucfirst($model->role);
+            })
+            ->addColumn('position', function (User $model) {
+                return ucfirst($model->position);
             })
             ->addColumn('created_at')
             ->addColumn('created_at_formatted', fn (User $model) => Carbon::parse($model->created_at)->format('d/m/Y H:i:s'));
@@ -196,6 +201,11 @@ final class EmployeeTable extends PowerGridComponent
             Column::make('No. Telp', 'phone', 'users.phone')
                 ->searchable()
                 ->makeInputText()
+                ->sortable(),
+
+            Column::make('Jabatan', 'position', 'positions.name')
+                ->searchable()
+                ->makeInputMultiSelect(Position::all(), 'name', 'position_id')
                 ->sortable(),
 
             Column::make('Role', 'role', 'roles.name')
