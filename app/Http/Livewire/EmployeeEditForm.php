@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Http\Traits\useUniqueValidation;
 use App\Models\Position;
 use App\Models\Role;
 use App\Models\User;
@@ -11,6 +12,8 @@ use Livewire\Component;
 
 class EmployeeEditForm extends Component
 {
+    use useUniqueValidation;
+
     public $employees;
     public Collection $roles;
     public Collection $positions;
@@ -18,6 +21,7 @@ class EmployeeEditForm extends Component
     public function mount(Collection $employees)
     {
         $this->employees = []; // reset, karena ada data employees sebelumnya
+
         foreach ($employees as $employee) {
             $this->employees[] = [
                 'id' => $employee->id,
@@ -47,31 +51,30 @@ class EmployeeEditForm extends Component
             'employees.*.position_id' => 'required|in:' . $positionIdRuleIn,
         ]);
 
-        // cek apakah no. telp yang diinput unique
-        $phoneNumbers = array_map(function ($employee) {
-            return trim($employee['phone']);
-        }, $this->employees);
-        $uniquePhoneNumbers = array_unique($phoneNumbers);
-
-        if (count($phoneNumbers) != count($uniquePhoneNumbers)) {
-            // layar browser ke paling atas agar user melihat alert error
+        if (!$this->isUniqueOnLocal('phone', $this->employees)) {
             $this->dispatchBrowserEvent('livewire-scroll', ['top' => 0]);
-            return session()->flash('failed', 'Pastikan input No. Telp tidak mangandung nilai yang sama.');
+            return session()->flash('failed', 'Pastikan input No. Telp tidak mangandung nilai yang sama dengan input lainnya.');
+        }
+
+        if (!$this->isUniqueOnLocal('email', $this->employees)) {
+            $this->dispatchBrowserEvent('livewire-scroll', ['top' => 0]);
+            return session()->flash('failed', 'Pastikan input Email tidak mangandung nilai yang sama dengan input lainnya.');
         }
 
         // alasan menggunakan create alih2 mengunakan ::insert adalah karena tidak looping untuk menambahkan created_at dan updated_at
         $affected = 0;
         foreach ($this->employees as $employee) {
             // cek unique validasi
-            // ambil data employee dari id
             $employeeBeforeUpdated = User::find($employee['id']);
-            // cek apakah email lama sama dengan email baru
-            if ($employeeBeforeUpdated->email !== trim($employee['email'])) {
-                // jika tidak sama, maka cek apakah row/data lain memiliki email yang sama
-                if (User::where('email', $employee['email'])->first()) {
-                    $this->dispatchBrowserEvent('livewire-scroll', ['top' => 0]);
-                    return session()->flash('failed', "Email dari data karyawaan {$employee['id']} sudah terdaftar. Silahkan masukan email yang berbeda!");
-                }
+
+            if (!$this->isUniqueOnDatabase($employeeBeforeUpdated, $employee, 'phone', User::class)) {
+                $this->dispatchBrowserEvent('livewire-scroll', ['top' => 0]);
+                return session()->flash('failed', "No. Telp dari data karyawaan {$employee['id']} sudah terdaftar. Silahkan masukan email yang berbeda!");
+            }
+
+            if (!$this->isUniqueOnDatabase($employeeBeforeUpdated, $employee, 'email', User::class)) {
+                $this->dispatchBrowserEvent('livewire-scroll', ['top' => 0]);
+                return session()->flash('failed', "Email dari data karyawaan {$employee['id']} sudah terdaftar. Silahkan masukan email yang berbeda!");
             }
 
             $affected += $employeeBeforeUpdated->update([

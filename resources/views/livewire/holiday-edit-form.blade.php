@@ -24,10 +24,6 @@
                     <x-form-error key="holidays.{{ $i }}.holiday_date" />
                 </div>
             </div>
-            @if ($i > 0)
-            <button class="btn btn-sm btn-danger mt-2" wire:click="removeHolidayInput({{ $i }})"
-                wire:target="removeHolidayInput({{ $i }})" type="button" wire:loading.attr="disabled">Hapus</button>
-            @endif
         </div>
         <hr>
         @endforeach
@@ -35,9 +31,6 @@
         <div class="d-flex justify-content-between align-items-center mb-5">
             <button class="btn btn-primary">
                 Simpan
-            </button>
-            <button class="btn btn-light" type="button" wire:click="addHolidayInput" wire:loading.attr="disabled">
-                Tambah Input
             </button>
         </div>
     </form>

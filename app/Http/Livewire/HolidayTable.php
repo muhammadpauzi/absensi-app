@@ -65,8 +65,8 @@ final class HolidayTable extends PowerGridComponent
                 return $this->dispatchBrowserEvent('showToast', ['success' => false, 'message' => 'Pilih data yang ingin diedit terlebih dahulu.']);
 
             $ids = join('-', $ids);
-            // return redirect(route('positions.edit', ['ids' => $ids])); // tidak berfungsi/menredirect
-            return $this->dispatchBrowserEvent('redirect', ['url' => route('positions.edit', ['ids' => $ids])]);
+            // return redirect(route('holidays.edit', ['ids' => $ids])); // tidak berfungsi/menredirect
+            return $this->dispatchBrowserEvent('redirect', ['url' => route('holidays.edit', ['ids' => $ids])]);
         }
     }
 
