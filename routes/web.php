@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\HolidayController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PositionController;
 use Illuminate\Support\Facades\Route;
@@ -29,6 +30,9 @@ Route::middleware('auth')->group(function () {
         // employees
         Route::resource('/employees', EmployeeController::class)->only(['index', 'create']);
         Route::get('/employees/edit', [EmployeeController::class, 'edit'])->name('employees.edit');
+        // holidays
+        Route::resource('/holidays', HolidayController::class)->only(['index', 'create']);
+        Route::get('/holidays/edit', [HolidayController::class, 'edit'])->name('holidays.edit');
     });
 
     Route::middleware('role:user')->name('home.')->group(function () {
