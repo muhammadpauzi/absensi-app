@@ -140,10 +140,10 @@ final class HolidayTable extends PowerGridComponent
     {
         return PowerGrid::eloquent()
             ->addColumn('id')
-            ->addColumn('name')
+            ->addColumn('title')
             ->addColumn('description')
             ->addColumn('holiday_date')
-            ->addColumn('holiday_date_formatted', fn (Holiday $model) => Carbon::parse($model->holiday_date)->format('d/m/Y H:i:s'))
+            ->addColumn('holiday_date_formatted', fn (Holiday $model) => Carbon::parse($model->holiday_date)->format('d/m/Y'))
             ->addColumn('created_at')
             ->addColumn('created_at_formatted', fn (Holiday $model) => Carbon::parse($model->created_at)->format('d/m/Y H:i:s'));
     }
@@ -169,9 +169,9 @@ final class HolidayTable extends PowerGridComponent
                 ->searchable()
                 ->sortable(),
 
-            Column::make('Nama Hari Libur', 'name')
+            Column::make('Nama Hari Libur', 'title')
                 ->searchable()
-                ->makeInputText('name')
+                ->makeInputText('title')
                 ->sortable(),
 
             Column::make('Keterangan', 'description')
