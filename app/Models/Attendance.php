@@ -28,28 +28,28 @@ class Attendance extends Model
     protected function startTime(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => strlen($value) > 5 ? substr($value, 0, -3) : $value,
+            get: fn ($value) => date('H:i', strtotime($value)),
         );
     }
 
     protected function batasStartTime(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => strlen($value) > 5 ? substr($value, 0, -3) : $value,
+            get: fn ($value) => date('H:i', strtotime($value)),
         );
     }
 
     protected function endTime(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => strlen($value) > 5 ? substr($value, 0, -3) : $value,
+            get: fn ($value) => date('H:i', strtotime($value)),
         );
     }
 
     protected function batasEndTime(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => strlen($value) > 5 ? substr($value, 0, -3) : $value,
+            get: fn ($value) => date('H:i', strtotime($value)),
         );
     }
 }

@@ -8,7 +8,7 @@ use Illuminate\Database\QueryException;
 use Illuminate\Database\Eloquent\Builder;
 use PowerComponents\LivewirePowerGrid\Rules\{Rule, RuleActions};
 use PowerComponents\LivewirePowerGrid\Traits\ActionButton;
-use PowerComponents\LivewirePowerGrid\{Button, Column, Exportable, Footer, Header, PowerGrid, PowerGridComponent, PowerGridEloquent};
+use PowerComponents\LivewirePowerGrid\{Button, Column, Detail, Exportable, Footer, Header, PowerGrid, PowerGridComponent, PowerGridEloquent};
 
 final class AttendanceTable extends PowerGridComponent
 {
@@ -124,11 +124,10 @@ final class AttendanceTable extends PowerGridComponent
             ->addColumn('id')
             ->addColumn('title')
             ->addColumn('description')
-            ->addColumn('start_time', fn (Attendance $model) => "$model->start_time/$model->batas_start_time")
-            ->addColumn('end_time', fn (Attendance $model) => "$model->end_time/$model->batas_end_time")
-            // ->addColumn('batas_start_time')
-            // ->addColumn('end_time')
-            // ->addColumn('batas_end_time')
+            ->addColumn('start_time')
+            ->addColumn('batas_start_time')
+            ->addColumn('end_time')
+            ->addColumn('batas_end_time')
             ->addColumn('created_at')
             ->addColumn('created_at_formatted', fn (Attendance $model) => Carbon::parse($model->created_at)->format('d/m/Y H:i:s'));
     }
@@ -161,27 +160,25 @@ final class AttendanceTable extends PowerGridComponent
 
             Column::make('Keterangan', 'description'),
 
-            Column::make('Waktu Absen Masuk', 'start_time', 'start_time')
+            Column::make('Waktu Mulai Absen Masuk', 'start_time', 'start_time')
                 ->searchable()
                 ->makeInputText('start_time')
                 ->sortable(),
 
-            Column::make('Waktu Absen Pulang', 'end_time', 'end_time')
+            Column::make('Batas Akhir Absen Masuk', 'batas_start_time', 'batas_start_time')
+                ->searchable()
+                ->makeInputText('batas_start_time')
+                ->sortable(),
+
+            Column::make('Waktu Mulai Absen Pulang', 'end_time', 'end_time')
                 ->searchable()
                 ->makeInputText('end_time')
                 ->sortable(),
 
-            // Column::make('Batas Waktu Mulai Absen Masuk', 'batas_start_time', 'batas_start_time')
-            //     ->makeInputDatePicker()
-            //     ->searchable(),
-
-            // Column::make('Waktu Mulai Absen Pulang', 'end_time', 'end_time')
-            //     ->makeInputDatePicker()
-            //     ->searchable(),
-
-            // Column::make('Batas Waktu Mulai Absen Pulang', 'batas_end_time', 'batas_end_time')
-            //     ->makeInputDatePicker()
-            //     ->searchable(),
+            Column::make('Batas Akhir Absen Pulang', 'batas_end_time', 'batas_end_time')
+                ->searchable()
+                ->makeInputText('batas_end_time')
+                ->sortable(),
 
             Column::make('Created at', 'created_at')
                 ->hidden(),
