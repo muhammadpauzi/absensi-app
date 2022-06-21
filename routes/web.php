@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EmployeeController;
@@ -30,9 +31,12 @@ Route::middleware('auth')->group(function () {
         // employees
         Route::resource('/employees', EmployeeController::class)->only(['index', 'create']);
         Route::get('/employees/edit', [EmployeeController::class, 'edit'])->name('employees.edit');
-        // holidays
+        // holidays (hari libur)
         Route::resource('/holidays', HolidayController::class)->only(['index', 'create']);
         Route::get('/holidays/edit', [HolidayController::class, 'edit'])->name('holidays.edit');
+        // attendances (absensi)
+        Route::resource('/attendances', AttendanceController::class)->only(['index', 'create']);
+        Route::get('/attendances/edit', [AttendanceController::class, 'edit'])->name('attendances.edit');
     });
 
     Route::middleware('role:user')->name('home.')->group(function () {

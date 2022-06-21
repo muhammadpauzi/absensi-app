@@ -30,8 +30,8 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link {{ request()->routeIs('holidays.*') ? 'active' : '' }}"
-                    href="{{ route('holidays.index') }}">
+                <a class="nav-link {{ request()->routeIs('attendances.*') ? 'active' : '' }}"
+                    href="{{ route('attendances.index') }}">
                     <span data-feather="clipboard" class="align-text-bottom"></span>
                     Absensi
                 </a>

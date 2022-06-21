@@ -5,7 +5,7 @@
         <div class="mb-3">
             <div class="w-100">
                 <div class="mb-3">
-                    <x-form-label id="description{{ $i }}" label='Nama/Judul Hari Libur ({{ $i + 1 }})' />
+                    <x-form-label id="title{{ $i }}" label='Nama/Judul Hari Libur ({{ $i + 1 }})' />
                     <x-form-input id="title{{ $i }}" name="title{{ $i }}" wire:model.defer="holidays.{{ $i }}.title" />
                     <x-form-error key="holidays.{{ $i }}.title" />
                 </div>
