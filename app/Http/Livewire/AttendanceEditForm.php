@@ -3,13 +3,17 @@
 namespace App\Http\Livewire;
 
 use App\Models\Attendance;
+use Illuminate\Support\Str;
 
 class AttendanceEditForm extends AttendanceAbstract
 {
+    public $initialCode;
+
     public function mount()
     {
         parent::mount();
-        $this->attendance['code'] = $this->attendance['code'] ? true : false;
+        $this->initialCode = $this->attendance['code'];
+        $this->attendance['code'] = $this->initialCode ? true : false; // untuk kondisi apakah input code checked
         $this->position_ids = $this->attendance->positions()->pluck('positions.id', 'positions.id')->toArray();
     }
 
@@ -20,14 +24,21 @@ class AttendanceEditForm extends AttendanceAbstract
             return is_numeric($id);
         });
         $position_ids = array_values($this->position_ids);
+
         $this->validate();
 
         $attendance = [];
         if (!$this->attendance->code) {
             $this->attendance->code = null;
-            $attendance = $this->attendance;
+            $attendance = $this->attendance->toArray();
         } else {
-            $attendance = $this->attendance->get()->except(['code'])->toArray();
+            $attendance = $this->attendance->toArray();
+            // generate code baru jika sebelumnya menggunakan button (atau diubah)
+            if (!$this->initialCode) {
+                $attendance['code'] = Str::random();
+            } else {
+                $attendance['code'] = $this->initialCode;
+            }
         }
 
         $this->attendance->update($attendance);
