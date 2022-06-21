@@ -206,21 +206,20 @@ final class AttendanceTable extends PowerGridComponent
      * @return array<int, Button>
      */
 
-    /*
     public function actions(): array
     {
-       return [
-           Button::make('edit', 'Edit')
-               ->class('bg-indigo-500 cursor-pointer text-white px-3 py-2.5 m-1 rounded text-sm')
-               ->route('attendance.edit', ['attendance' => 'id']),
+        return [
+            Button::make('edit', 'Edit')
+                ->class('badge text-bg-success')
+                ->target('')
+                ->route('attendances.edit', ['id' => 'id']),
 
-           Button::make('destroy', 'Delete')
-               ->class('bg-red-500 cursor-pointer text-white px-3 py-2 m-1 rounded text-sm')
-               ->route('attendance.destroy', ['attendance' => 'id'])
-               ->method('delete')
+            //    Button::make('destroy', 'Delete')
+            //        ->class('bg-red-500 cursor-pointer text-white px-3 py-2 m-1 rounded text-sm')
+            //        ->route('attendance.destroy', ['attendance' => 'id'])
+            //        ->method('delete')
         ];
     }
-    */
 
     /*
     |--------------------------------------------------------------------------

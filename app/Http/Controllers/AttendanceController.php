@@ -21,11 +21,11 @@ class AttendanceController extends Controller
         ]);
     }
 
-    public function edit(Attendance $attendance)
+    public function edit()
     {
         return view('attendances.edit', [
             "title" => "Edit Data Absensi",
-            "attendance" => $attendance
+            "attendance" => Attendance::findOrFail(request('id'))
         ]);
     }
 }

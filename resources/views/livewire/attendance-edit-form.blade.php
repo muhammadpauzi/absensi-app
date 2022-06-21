@@ -66,7 +66,15 @@
                 <x-form-error key="position_ids" />
                 {{-- tom-select init script ada di create.blade.php attendances --}}
             </div>
-
+            @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+            @endif
 
             <div class="mb-3">
                 <x-form-label id="flexCheckCode" label='Ingin Menggunakan QRCode (default menggunakan tombol)' />
