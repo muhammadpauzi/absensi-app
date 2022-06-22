@@ -12,6 +12,10 @@ class AttendanceEditForm extends AttendanceAbstract
     public function mount()
     {
         parent::mount();
+        $this->attendance['start_time'] = substr($this->attendance['start_time'], 0, -3);
+        $this->attendance['batas_start_time'] = substr($this->attendance['batas_start_time'], 0, -3);
+        $this->attendance['end_time'] = substr($this->attendance['end_time'], 0, -3);
+        $this->attendance['batas_end_time'] = substr($this->attendance['batas_end_time'], 0, -3);
         $this->initialCode = $this->attendance['code'];
         $this->attendance['code'] = $this->initialCode ? true : false; // untuk kondisi apakah input code checked
         $this->position_ids = $this->attendance->positions()->pluck('positions.id', 'positions.id')->toArray();
