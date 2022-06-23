@@ -68,9 +68,9 @@
             </div>
 
             <div class="mb-3">
-                <x-form-label id="flexCheckCode" label='Ingin Menggunakan QRCode (default menggunakan tombol)' />
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="" wire:model.defer="attendance.code"
+                <x-form-label id="flexCheckCode" label="Ingin Menggunakan QRCode (default menggunakan tombol)" />
+                <div class=" form-check">
+                    <input class="form-check-input" type="checkbox" value="" wire:model="attendance.code"
                         id="flexCheckCode">
                     <label class="form-check-label" for="flexCheckCode">
                         Menggunakan QRCode

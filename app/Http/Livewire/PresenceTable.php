@@ -2,7 +2,7 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\Holiday;
+use App\Models\Presence;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\QueryException;
 use Illuminate\Database\Eloquent\Builder;
@@ -10,65 +10,14 @@ use PowerComponents\LivewirePowerGrid\Rules\{Rule, RuleActions};
 use PowerComponents\LivewirePowerGrid\Traits\ActionButton;
 use PowerComponents\LivewirePowerGrid\{Button, Column, Exportable, Footer, Header, PowerGrid, PowerGridComponent, PowerGridEloquent};
 
-final class HolidayTable extends PowerGridComponent
+final class PresenceTable extends PowerGridComponent
 {
     use ActionButton;
 
-    protected function getListeners()
-    {
-        return array_merge(
-            parent::getListeners(),
-            [
-                'bulkCheckedDelete',
-                'bulkCheckedEdit'
-            ]
-        );
-    }
-
-    public function header(): array
-    {
-        return [
-            Button::add('bulk-checked')
-                ->caption(__('Hapus'))
-                ->class('btn btn-danger border-0')
-                ->emit('bulkCheckedDelete', []),
-            Button::add('bulk-edit-checked')
-                ->caption(__('Edit'))
-                ->class('btn btn-success border-0')
-                ->emit('bulkCheckedEdit', []),
-        ];
-    }
-
-    public function bulkCheckedDelete()
-    {
-        if (auth()->check()) {
-            $ids = $this->checkedValues();
-
-            if (!$ids)
-                return $this->dispatchBrowserEvent('showToast', ['success' => false, 'message' => 'Pilih data yang ingin dihapus terlebih dahulu.']);
-
-            try {
-                Holiday::whereIn('id', $ids)->delete();
-                $this->dispatchBrowserEvent('showToast', ['success' => true, 'message' => 'Data hari libur berhasi dihapus.']);
-            } catch (\Illuminate\Database\QueryException $ex) {
-                $this->dispatchBrowserEvent('showToast', ['success' => false, 'message' => 'Data gagal dihapus, kemungkinan ada data lain yang menggunakan data tersebut.']);
-            }
-        }
-    }
-
-    public function bulkCheckedEdit()
-    {
-        if (auth()->check()) {
-            $ids = $this->checkedValues();
-
-            if (!$ids)
-                return $this->dispatchBrowserEvent('showToast', ['success' => false, 'message' => 'Pilih data yang ingin diedit terlebih dahulu.']);
-
-            $ids = join('-', $ids);
-            // return redirect(route('holidays.edit', ['ids' => $ids])); // tidak berfungsi/menredirect
-            return $this->dispatchBrowserEvent('redirect', ['url' => route('holidays.edit', ['ids' => $ids])]);
-        }
-    }
+    public $attendanceId;
+    //Table sort field
+    public string $sortField = 'presences.created_at';
+    public string $sortDirection = 'desc';
 
     /*
     |--------------------------------------------------------------------------
@@ -103,11 +52,14 @@ final class HolidayTable extends PowerGridComponent
     /**
      * PowerGrid datasource.
      *
-     * @return Builder<\App\Models\Holiday>
+     * @return Builder<\App\Models\Presence>
      */
     public function datasource(): Builder
     {
-        return Holiday::query()->latest();
+        return Presence::query()
+            ->where('attendance_id', $this->attendanceId)
+            ->join('users', 'presences.user_id', '=', 'users.id')
+            ->select('presences.*', 'users.name as user_name');
     }
 
     /*
@@ -140,12 +92,12 @@ final class HolidayTable extends PowerGridComponent
     {
         return PowerGrid::eloquent()
             ->addColumn('id')
-            ->addColumn('title')
-            ->addColumn('description')
-            ->addColumn('holiday_date')
-            ->addColumn('holiday_date_formatted', fn (Holiday $model) => Carbon::parse($model->holiday_date)->format('d/m/Y'))
+            ->addColumn('user_name')
+            ->addColumn("presence_date")
+            ->addColumn("presence_enter_time")
+            ->addColumn("presence_out_time")
             ->addColumn('created_at')
-            ->addColumn('created_at_formatted', fn (Holiday $model) => Carbon::parse($model->created_at)->format('d/m/Y H:i:s'));
+            ->addColumn('created_at_formatted', fn (Presence $model) => Carbon::parse($model->created_at)->format('d/m/Y H:i:s'));
     }
 
     /*
@@ -169,27 +121,32 @@ final class HolidayTable extends PowerGridComponent
                 ->searchable()
                 ->sortable(),
 
-            Column::make('Nama Hari Libur', 'title')
+            Column::make('Nama', 'user_name')
                 ->searchable()
-                ->makeInputText('title')
+                ->makeInputText('users.name')
                 ->sortable(),
 
-            Column::make('Keterangan', 'description')
-                ->searchable()
-                ->makeInputText('description')
-                ->sortable(),
-
-            Column::make('Tanggal Libur', 'holiday_date')
-                ->hidden(),
-
-            Column::make('Tanggal Libur', 'holiday_date_formatted', 'holiday_date')
+            Column::make('Tanggal Hadir', 'presence_date')
                 ->makeInputDatePicker()
-                ->searchable(),
+                ->searchable()
+                ->sortable(),
+
+            Column::make('Jam Absen Masuk', 'presence_enter_time')
+                ->searchable()
+                // ->makeInputRange('presence_enter_time'), // terlalu banyak menggunakan bandwidth (ukuran data yang dikirim terlalu besar)
+                ->makeInputText('presence_enter_time')
+                ->sortable(),
+
+            Column::make('Jam Absen Pulang', 'presence_out_time')
+                ->searchable()
+                // ->makeInputRange('presence_out_time') // ini juga
+                ->makeInputText('presence_out_time')
+                ->sortable(),
 
             Column::make('Created at', 'created_at')
                 ->hidden(),
 
-            Column::make('Created at', 'created_at_formatted', 'created_at')
+            Column::make('Created at', 'created_at_formatted')
                 ->makeInputDatePicker()
                 ->searchable()
         ];
@@ -204,7 +161,7 @@ final class HolidayTable extends PowerGridComponent
     */
 
     /**
-     * PowerGrid Holiday Action Buttons.
+     * PowerGrid Presence Action Buttons.
      *
      * @return array<int, Button>
      */
@@ -215,11 +172,11 @@ final class HolidayTable extends PowerGridComponent
        return [
            Button::make('edit', 'Edit')
                ->class('bg-indigo-500 cursor-pointer text-white px-3 py-2.5 m-1 rounded text-sm')
-               ->route('holiday.edit', ['holiday' => 'id']),
+               ->route('presence.edit', ['presence' => 'id']),
 
            Button::make('destroy', 'Delete')
                ->class('bg-red-500 cursor-pointer text-white px-3 py-2 m-1 rounded text-sm')
-               ->route('holiday.destroy', ['holiday' => 'id'])
+               ->route('presence.destroy', ['presence' => 'id'])
                ->method('delete')
         ];
     }
@@ -234,7 +191,7 @@ final class HolidayTable extends PowerGridComponent
     */
 
     /**
-     * PowerGrid Holiday Action Rules.
+     * PowerGrid Presence Action Rules.
      *
      * @return array<int, RuleActions>
      */
@@ -246,7 +203,7 @@ final class HolidayTable extends PowerGridComponent
 
            //Hide button edit for ID 1
             Rule::button('edit')
-                ->when(fn($holiday) => $holiday->id === 1)
+                ->when(fn($presence) => $presence->id === 1)
                 ->hide(),
         ];
     }

@@ -7,6 +7,7 @@ use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\HolidayController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PositionController;
+use App\Http\Controllers\PresenceController;
 use Illuminate\Support\Facades\Route;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
@@ -37,10 +38,17 @@ Route::middleware('auth')->group(function () {
         // attendances (absensi)
         Route::resource('/attendances', AttendanceController::class)->only(['index', 'create']);
         Route::get('/attendances/edit', [AttendanceController::class, 'edit'])->name('attendances.edit');
+        // presences (kehadiran)
+        Route::resource('/presences', PresenceController::class)->only(['index']);
+        Route::get('/presences/qrcode', [PresenceController::class, 'showQrcode'])->name('presences.qrcode');
+        Route::get('/presences/qrcode/download-pdf', [PresenceController::class, 'downloadQrCodePDF'])->name('presences.qrcode.download-pdf');
+        Route::get('/presences/{attendance}', [PresenceController::class, 'show'])->name('presences.show');
     });
 
     Route::middleware('role:user')->name('home.')->group(function () {
         Route::get('/', [HomeController::class, 'index'])->name('index');
+        // desctination after scan qrcode
+        Route::get('/qrcode')->name('qrcode');
     });
 
     Route::delete('/logout', [AuthController::class, 'logout'])->name('auth.logout');
