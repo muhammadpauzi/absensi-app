@@ -47,6 +47,13 @@ class Attendance extends Model
         );
     }
 
+    public function scopeForCurrentUser($query, $userPositionId)
+    {
+        $query->whereHas('positions', function ($query) use ($userPositionId) {
+            $query->where('position_id', $userPositionId);
+        });
+    }
+
     public function positions()
     {
         return $this->belongsToMany(Position::class);
