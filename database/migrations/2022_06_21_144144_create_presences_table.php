@@ -19,7 +19,7 @@ return new class extends Migration
             $table->foreignId('attendance_id')->constrained()->cascadeOnDelete();
             $table->date("presence_date");
             $table->time("presence_enter_time");
-            $table->time("presence_out_time");
+            $table->time("presence_out_time")->nullable();
             $table->timestamps();
         });
     }
