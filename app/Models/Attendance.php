@@ -2,10 +2,14 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use DateTime;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Date;
+use Illuminate\Support\Facades\URL;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class Attendance extends Model
 {
@@ -27,21 +31,23 @@ class Attendance extends Model
     {
         return Attribute::make(
             get: function ($value) {
-                // now()->timestamp()
-                $startTimestamp = strtotime($this->start_time);
-                $batasStartTimestamp = strtotime($this->batas_start_time);
 
-                $endTimestamp = strtotime($this->end_time);
-                $batasEndTimestamp = strtotime($this->batas_end_time);
+                $now = now();
+                $startTime = Carbon::parse($this->start_time);
+                $batasStartTime = Carbon::parse($this->batas_start_time);
 
-                $nowTimestamp = strtotime(now()->format("H:i:s"));
-
+                $endTime = Carbon::parse($this->end_time);
+                $batasEndTime = Carbon::parse($this->batas_end_time);
+                // dd($startTime->timestamp, $batasStartTime->timestamp, $now->timestamp);
                 return (object) [
                     "start_time" => $this->start_time,
                     "batas_start_time" => $this->batas_start_time,
-                    "now" => now()->format("H:i:s"),
-                    "is_start" => $startTimestamp <= $nowTimestamp && $batasStartTimestamp >= $nowTimestamp,
-                    "is_end" => $endTimestamp <= $nowTimestamp && $batasEndTimestamp >= $nowTimestamp
+                    "end_time" => $this->end_time,
+                    "batas_end_time" => $this->batas_end_time,
+                    "now" => $now->format("H:i:s"),
+                    "is_start" => $startTime <= $now && $batasStartTime >= $now,
+                    "is_end" => $endTime <= $now && $batasEndTime >= $now,
+                    'is_using_qrcode' => $this->code ? true : false,
                 ];
             },
         );
