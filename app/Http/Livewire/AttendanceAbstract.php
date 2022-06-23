@@ -18,7 +18,7 @@ class AttendanceAbstract extends Component
         'attendance.batas_start_time' => 'required|date_format:H:i|after:start_time',
         'attendance.end_time' => 'required|date_format:H:i',
         'attendance.batas_end_time' => 'required|date_format:H:i|after:end_time',
-        'attendance.code' => 'present|boolean',
+        'attendance.code' => 'sometimes|nullable|boolean',
         'position_ids' => 'required|array',
         "position_ids.*"  => "required|distinct|numeric",
     ];

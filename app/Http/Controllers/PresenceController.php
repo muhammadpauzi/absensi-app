@@ -59,9 +59,6 @@ class PresenceController extends Controller
         if (!Attendance::query()->where('code', $code)->first())
             throw new NotFoundHttpException(message: "Tidak ditemukan absensi dengan code '$code'.");
 
-        $qrcodeUrl = URL::route('home.qrcode', ['code' => $code]);
-        $qrcode = "data:image/svg+xml;base64," . base64_encode(QrCode::size(300)->style('round')->generate($qrcodeUrl));
-
-        return $qrcode;
+        return parent::getQrCode($code);
     }
 }

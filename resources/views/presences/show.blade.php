@@ -8,13 +8,7 @@
                 <h5 class="card-title">{{ $attendance->title }}</h5>
                 <h6 class="card-subtitle mb-2 text-muted">{{ $attendance->description }}</h6>
                 <div class="d-flex align-items-center gap-2">
-                    @if ($attendance->data->is_start)
-                    <span class="badge bg-primary rounded-pill">Masuk</span>
-                    @elseif($attendance->data->is_end)
-                    <span class="badge text-bg-warning rounded-pill">Pulang</span>
-                    @else
-                    <span class="badge text-bg-danger rounded-pill">Tutup</span>
-                    @endif
+                    @include('partials.attendance-badges')
                     <a href="" class="badge text-bg-warning">Karyawaan Izin</a>
                     <a href="" class="badge text-bg-danger">Belum Absen</a>
                     @if ($attendance->code)

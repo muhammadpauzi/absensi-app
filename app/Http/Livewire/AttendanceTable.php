@@ -14,6 +14,10 @@ final class AttendanceTable extends PowerGridComponent
 {
     use ActionButton;
 
+    //Table sort field
+    public string $sortField = 'attendances.created_at';
+    public string $sortDirection = 'desc';
+
     protected function getListeners()
     {
         return array_merge(

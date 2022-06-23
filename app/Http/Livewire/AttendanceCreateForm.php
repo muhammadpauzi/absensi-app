@@ -18,7 +18,7 @@ class AttendanceCreateForm extends AttendanceAbstract
 
         $this->validate();
 
-        if ($this->attendance['code']) // jika menggunakan qrcode
+        if (array_key_exists("code", $this->attendance) && $this->attendance['code']) // jika menggunakan qrcode
             $this->attendance['code'] = Str::random();
 
         $attendance = Attendance::create($this->attendance);

@@ -15,6 +15,8 @@
                 <li class="nav-item px-4 py-1 px-md-0 py-md-0">
                     <form action="{{ route('auth.logout') }}" method="post">
                         @method('DELETE')
+                        @csrf
+
                         <button class="btn fw-bold btn-danger w-100">Keluar</button>
                     </form>
                 </li>

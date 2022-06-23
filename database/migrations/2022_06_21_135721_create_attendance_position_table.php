@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('attendance_position', function (Blueprint $table) {
             $table->id();
             $table->foreignId('attendance_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('position_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('position_id')->constrained();
             $table->timestamps();
         });
     }

@@ -21,4 +21,15 @@ class HomeController extends Controller
             "attendances" => $attendances
         ]);
     }
+
+    public function show(Attendance $attendance)
+    {
+        $attendance->load(['presences']);
+
+        return view('home.show', [
+            "title" => "Informasi Absensi Kehadiran",
+            "attendance" => $attendance,
+            'qrcode' => $this->getQrCode($attendance->code)
+        ]);
+    }
 }

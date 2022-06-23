@@ -47,6 +47,7 @@ Route::middleware('auth')->group(function () {
 
     Route::middleware('role:user')->name('home.')->group(function () {
         Route::get('/', [HomeController::class, 'index'])->name('index');
+        Route::get('/absensi/{attendance}', [HomeController::class, 'show'])->name('show');
         // desctination after scan qrcode
         Route::get('/qrcode')->name('qrcode');
     });
