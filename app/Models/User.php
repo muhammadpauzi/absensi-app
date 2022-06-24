@@ -59,6 +59,11 @@ class User extends Authenticatable
         return $this->belongsTo(Position::class);
     }
 
+    public function scopeOnlyEmployees($query)
+    {
+        return $query->where('role_id', self::USER_ROLE_ID);
+    }
+
     public function isAdmin()
     {
         return $this->role_id === self::ADMIN_ROLE_ID;

@@ -43,6 +43,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/presences/qrcode', [PresenceController::class, 'showQrcode'])->name('presences.qrcode');
         Route::get('/presences/qrcode/download-pdf', [PresenceController::class, 'downloadQrCodePDF'])->name('presences.qrcode.download-pdf');
         Route::get('/presences/{attendance}', [PresenceController::class, 'show'])->name('presences.show');
+        // not present data
+        Route::get('/presences/{attendance}/not-present', [PresenceController::class, 'notPresent'])->name('presences.not-present');
+        Route::post('/presences/{attendance}/not-present', [PresenceController::class, 'notPresent']);
     });
 
     Route::middleware('role:user')->name('home.')->group(function () {

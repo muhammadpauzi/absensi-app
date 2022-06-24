@@ -3,11 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Attendance;
+use App\Models\Presence;
+use App\Models\User;
 use Barryvdh\DomPDF\Facade\Pdf;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\URL;
-use SimpleSoftwareIO\QrCode\Facades\QrCode;
-use Spatie\FlareClient\Http\Exceptions\NotFound;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class PresenceController extends Controller
@@ -60,5 +58,46 @@ class PresenceController extends Controller
             throw new NotFoundHttpException(message: "Tidak ditemukan absensi dengan code '$code'.");
 
         return parent::getQrCode($code);
+    }
+
+    public function notPresent(Attendance $attendance)
+    {
+        $byDate = now()->toDateString();
+        if (request('display-by-date'))
+            $byDate = request('display-by-date');
+
+        $presences = Presence::query()
+            ->where('attendance_id', $attendance->id)
+            ->where('presence_date', $byDate)
+            ->get(['presence_date', 'user_id']);
+
+        $uniquePresenceDates = $presences->unique("presence_date")->pluck('presence_date');
+
+        $uniquePresenceDatesAndCompactTheUserIds = $uniquePresenceDates->map(function ($date) use ($presences) {
+            return [
+                "presence_date" => $date,
+                "user_ids" => $presences->where('presence_date', $date)->pluck('user_id')->toArray()
+            ];
+        });
+
+        $notPresentData = [];
+        foreach ($uniquePresenceDatesAndCompactTheUserIds as $presence) {
+            $notPresentData[] =
+                [
+                    "not_presence_date" => $presence['presence_date'],
+                    "users" => User::query()
+                        ->with('position')
+                        ->onlyEmployees()
+                        ->whereNotIn('id', $presence['user_ids'])
+                        ->get()
+                        ->toArray()
+                ];
+        }
+
+        return view('presences.not-present', [
+            "title" => "Data Karyawan Tidak Hadir",
+            "attendance" => $attendance,
+            "notPresentData" => $notPresentData
+        ]);
     }
 }
