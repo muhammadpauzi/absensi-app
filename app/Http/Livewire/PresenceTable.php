@@ -34,7 +34,7 @@ final class PresenceTable extends PowerGridComponent
             Exportable::make('export')
                 ->striped()
                 ->type(Exportable::TYPE_XLS, Exportable::TYPE_CSV),
-            Header::make()->showSearchInput(),
+            Header::make()->showSearchInput()->showToggleColumns(),
             Footer::make()
                 ->showPerPage()
                 ->showRecordCount(),
@@ -133,7 +133,7 @@ final class PresenceTable extends PowerGridComponent
 
             Column::make('Jam Absen Masuk', 'presence_enter_time')
                 ->searchable()
-                // ->makeInputRange('presence_enter_time'), // terlalu banyak menggunakan bandwidth (ukuran data yang dikirim terlalu besar)
+                // ->makeInputRange('presence_enter_time') // terlalu banyak menggunakan bandwidth (ukuran data yang dikirim terlalu besar)
                 ->makeInputText('presence_enter_time')
                 ->sortable(),
 

@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@push('style')
+@powerGridStyles
+@endpush
+
 @section('content')
 <div class="card mb-3">
     <div class="card-body">
@@ -48,8 +52,12 @@
 </div>
 
 <div>
-
     <livewire:presence-table attendanceId="{{ $attendance->id }}" />
 </div>
 
 @endsection
+
+@push('script')
+<script src="{{ asset('jquery/jquery-3.6.0.min.js') }}"></script>
+@powerGridScripts
+@endpush
