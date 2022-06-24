@@ -6,6 +6,7 @@ use App\Models\Attendance;
 use App\Models\Presence;
 use App\Models\User;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class PresenceController extends Controller
@@ -99,5 +100,35 @@ class PresenceController extends Controller
             "attendance" => $attendance,
             "notPresentData" => $notPresentData
         ]);
+    }
+
+    public function presentUser(Request $request, Attendance $attendance)
+    {
+        $validated = $request->validate([
+            'user_id' => 'required|string|numeric',
+            "presence_date" => "required|date"
+        ]);
+
+        $user = User::findOrFail($validated['user_id']);
+
+        $presence = Presence::query()
+            ->where('attendance_id', $attendance->id)
+            ->where('user_id', $user->id)
+            ->where('presence_date', $validated['presence_date'])
+            ->first();
+
+        // jika data user yang didapatkan dari request user_id, presence_date, sudah absen atau sudah ada ditable presences
+        if ($presence || !$user)
+            return back()->with('failed', 'Request tidak diterima.');
+
+        Presence::create([
+            "attendance_id" => $attendance->id,
+            "user_id" => $user->id,
+            "presence_date" => $validated['presence_date'],
+            "presence_enter_time" => now()->toTimeString(),
+            "presence_out_time" => now()->toTimeString()
+        ]);
+
+        return back()->with('success', "Berhasil menyimpan data hadir atas nama \"$user->name\".");
     }
 }

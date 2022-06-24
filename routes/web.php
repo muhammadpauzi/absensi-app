@@ -38,6 +38,7 @@ Route::middleware('auth')->group(function () {
         // attendances (absensi)
         Route::resource('/attendances', AttendanceController::class)->only(['index', 'create']);
         Route::get('/attendances/edit', [AttendanceController::class, 'edit'])->name('attendances.edit');
+
         // presences (kehadiran)
         Route::resource('/presences', PresenceController::class)->only(['index']);
         Route::get('/presences/qrcode', [PresenceController::class, 'showQrcode'])->name('presences.qrcode');
@@ -46,6 +47,8 @@ Route::middleware('auth')->group(function () {
         // not present data
         Route::get('/presences/{attendance}/not-present', [PresenceController::class, 'notPresent'])->name('presences.not-present');
         Route::post('/presences/{attendance}/not-present', [PresenceController::class, 'notPresent']);
+        // present (url untuk menambahkan/mengubah user yang tidak hadir menjadi hadir)
+        Route::post('/presences/{attendance}/present', [PresenceController::class, 'presentUser'])->name('presences.present');
     });
 
     Route::middleware('role:user')->name('home.')->group(function () {

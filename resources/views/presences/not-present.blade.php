@@ -12,10 +12,12 @@
 @endsection
 
 @section('content')
+@include('partials.alerts')
+
 <div class="card mb-3">
     <div class="card-body">
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-6 mb-3 mb-md-0">
                 <h5 class="card-title">{{ $attendance->title }}</h5>
                 <h6 class="card-subtitle mb-2 text-muted">{{ $attendance->description }}</h6>
                 <div class="d-flex align-items-center gap-2">
@@ -80,7 +82,12 @@
                     </td>
                     <td>{{ $user['position']['name'] }}</td>
                     <td>
-                        <a href="" class="badge text-bg-primary">Hadir</a>
+                        <form action="{{ route('presences.present', $attendance->id) }}" method="post">
+                            @csrf
+                            <input type="hidden" name="user_id" value="{{ $user['id'] }}">
+                            <input type="hidden" name="presence_date" value="{{ $data['not_presence_date'] }}">
+                            <button class="badge text-bg-primary border-0" type="submit">Hadir</button>
+                        </form>
                     </td>
                 </tr>
                 @endforeach
