@@ -25,9 +25,7 @@
                 </div>
             </div>
             <div class="col-md-6">
-                <form action="" method="post">
-                    @csrf
-
+                <form action="" method="get">
                     <div class="mb-3">
                         <label for="filterDate" class="form-label fw-bold">Tampilkan Berdasarkan Tanggal</label>
                         <div class="input-group mb-3">
