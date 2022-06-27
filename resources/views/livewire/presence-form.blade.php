@@ -19,13 +19,13 @@
     @endif --}}
 
     {{-- jika tidak menggunakan qrcode (button) --}}
-    @if (!$attendance->data->is_using_qrcode)
+    @if (!$attendance->data->is_using_qrcode && !$data['is_there_permission'])
 
     {{-- jika belum absen dan absen masuk sudah dimulai --}}
     @if ($attendance->data->is_start && !$data['is_has_enter_today'])
     <button class="btn btn-primary px-3 py-2 btn-sm fw-bold" wire:click="sendEnterPresence" wire:loading.attr="disabled"
         wire:target="sendEnterPresence">Masuk</button>
-    <button class="btn btn-info px-3 py-2 btn-sm fw-bold">Izin</button>
+    <a href="{{ route('home.permission', $attendance->id) }}" class="btn btn-info px-3 py-2 btn-sm fw-bold">Izin</a>
     @endif
 
     @if ($data['is_has_enter_today'])
@@ -53,10 +53,18 @@
         <small class="fw-bold">Belum saatnya melakukan absensi pulang.</small>
     </div>
     @endif
+    @endif
 
+    @if($data['is_there_permission'] && !$data['is_permission_accepted'])
+    <div class="alert alert-info">
+        <small class="fw-bold">Permintaan izin sedang diproses (atau masih belum di terima).</small>
+    </div>
+    @endif
 
-
-
+    @if($data['is_there_permission'] && $data['is_permission_accepted'])
+    <div class="alert alert-success">
+        <small class="fw-bold">Permintaan izin sudah diterima.</small>
+    </div>
     @endif
 
     {{-- @if ($attendance->data->is_end && $attendance->data->is_using_qrcode)

@@ -49,13 +49,16 @@ Route::middleware('auth')->group(function () {
         Route::post('/presences/{attendance}/not-present', [PresenceController::class, 'notPresent']);
         // present (url untuk menambahkan/mengubah user yang tidak hadir menjadi hadir)
         Route::post('/presences/{attendance}/present', [PresenceController::class, 'presentUser'])->name('presences.present');
+        Route::post('/presences/{attendance}/acceptPermission', [PresenceController::class, 'acceptPermission'])->name('presences.acceptPermission');
         // employees permissions
+
         Route::get('/presences/{attendance}/permissions', [PresenceController::class, 'permissions'])->name('presences.permissions');
     });
 
     Route::middleware('role:user')->name('home.')->group(function () {
         Route::get('/', [HomeController::class, 'index'])->name('index');
         Route::get('/absensi/{attendance}', [HomeController::class, 'show'])->name('show');
+        Route::get('/absensi/{attendance}/permission', [HomeController::class, 'permission'])->name('permission');
         // desctination after scan qrcode
         Route::get('/qrcode')->name('qrcode');
     });

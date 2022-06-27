@@ -75,15 +75,21 @@
                         <span class="fw-bold"> / </span>
                         <a href="tel:{{ $permission->user->phone }}">{{ $permission->user->phone }}</a>
                     </td>
-                    {{-- <td>{{ $permission['position']['name'] }}</td> --}}
-                    {{-- <td>
-                        <form action="{{ route('presences.present', $attendance->id) }}" method="post">
+                    <td>{{ $permission->user->position->name }}</td>
+                    @if ($permission->is_accepted)
+                    <td>
+                        <span class="badge text-bg-success border-0">Sudah Diterima</span>
+                    </td>
+                    @else
+                    <td>
+                        <form action="{{ route('presences.acceptPermission', $attendance->id) }}" method="post">
                             @csrf
-                            <input type="hidden" name="user_id" value="{{ $permission['id'] }}">
-                            <input type="hidden" name="presence_date" value="{{ $permission['not_presence_date'] }}">
-                            <button class="badge text-bg-primary border-0" type="submit">Hadir</button>
+                            <input type="hidden" name="user_id" value="{{ $permission->user->id }}">
+                            <input type="hidden" name="permission_date" value="{{ $permission->permission_date }}">
+                            <button class="badge text-bg-primary border-0" type="submit">Terima</button>
                         </form>
-                    </td> --}}
+                    </td>
+                    @endif
                 </tr>
                 @endforeach
             </tbody>

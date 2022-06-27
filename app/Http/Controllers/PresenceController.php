@@ -147,6 +147,48 @@ class PresenceController extends Controller
             ->with('success', "Berhasil menyimpan data hadir atas nama \"$user->name\".");
     }
 
+    public function acceptPermission(Request $request, Attendance $attendance)
+    {
+        $validated = $request->validate([
+            'user_id' => 'required|string|numeric',
+            "permission_date" => "required|date"
+        ]);
+
+        $user = User::findOrFail($validated['user_id']);
+
+        $permission = Permission::query()
+            ->where('attendance_id', $attendance->id)
+            ->where('user_id', $user->id)
+            ->where('permission_date', $validated['permission_date'])
+            ->first();
+
+        $presence = Presence::query()
+            ->where('attendance_id', $attendance->id)
+            ->where('user_id', $user->id)
+            ->where('presence_date', $validated['permission_date'])
+            ->first();
+
+        // jika data user yang didapatkan dari request user_id, presence_date, sudah absen atau sudah ada ditable presences
+        if ($presence || !$user)
+            return back()->with('failed', 'Request tidak diterima.');
+
+        Presence::create([
+            "attendance_id" => $attendance->id,
+            "user_id" => $user->id,
+            "presence_date" => $validated['permission_date'],
+            "presence_enter_time" => now()->toTimeString(),
+            "presence_out_time" => now()->toTimeString(),
+            'is_permission' => true
+        ]);
+
+        $permission->update([
+            'is_accepted' => 1
+        ]);
+
+        return back()
+            ->with('success', "Berhasil menerima data izin karyawan atas nama \"$user->name\".");
+    }
+
     private function getNotPresentEmployees($presences)
     {
         $uniquePresenceDates = $presences->unique("presence_date")->pluck('presence_date');
