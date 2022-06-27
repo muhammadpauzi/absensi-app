@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Attendance;
+use App\Models\Holiday;
 use App\Models\Permission;
 use App\Models\Presence;
 use Illuminate\Http\Request;
@@ -48,11 +49,16 @@ class HomeController extends Controller
             'is_permission_accepted' => $isTherePermission->is_accepted
         ];
 
+        $holiday = $attendance->data->is_holiday_today ? Holiday::query()
+            ->where('holiday_date', now()->toDateString())
+            ->first() : false;
+
         // dd($data);
         return view('home.show', [
             "title" => "Informasi Absensi Kehadiran",
             "attendance" => $attendance,
-            "data" => $data
+            "data" => $data,
+            "holiday" => $holiday
         ]);
     }
 

@@ -18,7 +18,13 @@
     <button class="btn btn-info px-3 py-2 btn-sm fw-bold">Izin</button>
     @endif --}}
 
-    {{-- jika tidak menggunakan qrcode (button) --}}
+    @if ($holiday)
+    <div class="alert alert-success">
+        <small class="fw-bold">Hari ini adalah hari libur.</small>
+    </div>
+    @else
+
+    {{-- jika tidak menggunakan qrcode (button) dan karyawan saat ini tidak menekan tombol izin --}}
     @if (!$attendance->data->is_using_qrcode && !$data['is_there_permission'])
 
     {{-- jika belum absen dan absen masuk sudah dimulai --}}
@@ -65,6 +71,9 @@
     <div class="alert alert-success">
         <small class="fw-bold">Permintaan izin sudah diterima.</small>
     </div>
+    @endif
+
+    {{-- holiday conditonal end --}}
     @endif
 
     {{-- @if ($attendance->data->is_end && $attendance->data->is_using_qrcode)

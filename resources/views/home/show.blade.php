@@ -8,7 +8,7 @@
                 @include('partials.attendance-badges')
             </div>
 
-            <livewire:presence-form :attendance="$attendance" :data="$data">
+            <livewire:presence-form :attendance="$attendance" :data="$data" :holiday="$holiday">
         </div>
     </div>
 </div>

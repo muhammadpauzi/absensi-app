@@ -9,6 +9,7 @@ use Livewire\Component;
 class PresenceForm extends Component
 {
     public Attendance $attendance;
+    public $holiday;
     public $data;
 
     public function mount(Attendance $attendance)
