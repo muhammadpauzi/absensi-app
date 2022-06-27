@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Attendance;
+use App\Models\Permission;
 use App\Models\Presence;
 use App\Models\User;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -92,6 +93,26 @@ class PresenceController extends Controller
             "title" => "Data Karyawan Tidak Hadir",
             "attendance" => $attendance,
             "notPresentData" => $notPresentData
+        ]);
+    }
+
+    public function permissions(Attendance $attendance)
+    {
+        $byDate = now()->toDateString();
+        if (request('display-by-date'))
+            $byDate = request('display-by-date');
+
+        $permissions = Permission::query()
+            ->with(['user', 'user.position'])
+            ->where('attendance_id', $attendance->id)
+            ->where('permission_date', $byDate)
+            ->get();
+
+        return view('presences.permissions', [
+            "title" => "Data Karyawan Izin",
+            "attendance" => $attendance,
+            "permissions" => $permissions,
+            "date" => $byDate
         ]);
     }
 

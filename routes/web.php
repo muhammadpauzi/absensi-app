@@ -49,6 +49,8 @@ Route::middleware('auth')->group(function () {
         Route::post('/presences/{attendance}/not-present', [PresenceController::class, 'notPresent']);
         // present (url untuk menambahkan/mengubah user yang tidak hadir menjadi hadir)
         Route::post('/presences/{attendance}/present', [PresenceController::class, 'presentUser'])->name('presences.present');
+        // employees permissions
+        Route::get('/presences/{attendance}/permissions', [PresenceController::class, 'permissions'])->name('presences.permissions');
     });
 
     Route::middleware('role:user')->name('home.')->group(function () {
