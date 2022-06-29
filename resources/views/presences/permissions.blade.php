@@ -105,7 +105,7 @@
         @endif
     </div>
 </div>
-
+@if (count($permissions) !== 0)
 <div class="modal fade" id="permission-detail-modal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -132,6 +132,7 @@
         </div>
     </div>
 </div>
+@endif
 
 @endsection
 
