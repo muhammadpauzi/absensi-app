@@ -6,6 +6,7 @@ use App\Models\Position;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Hash;
 use Livewire\Component;
 
 class EmployeeCreateForm extends Component
@@ -68,6 +69,7 @@ class EmployeeCreateForm extends Component
         $affected = 0;
         foreach ($this->employees as $employee) {
             if (trim($employee['password']) === '') $employee['password'] = '123';
+            $employee['password'] = Hash::make($employee['password']);
             User::create($employee);
             $affected++;
         }
