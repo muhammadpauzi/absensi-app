@@ -15,8 +15,7 @@ class Controller extends BaseController
 
     public function getQrCode(?string $code): string
     {
-        $qrcodeUrl = URL::route('home.qrcode', ['code' => $code]);
-        $qrcode = "data:image/svg+xml;base64," . base64_encode(QrCode::size(300)->style('round')->generate($qrcodeUrl));
+        $qrcode = "data:image/svg+xml;base64," . base64_encode(QrCode::size(300)->style('round')->generate($code));
         return $qrcode;
     }
 }

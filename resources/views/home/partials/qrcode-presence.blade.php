@@ -10,7 +10,8 @@
 
     {{-- jika belum absen dan absen masuk sudah dimulai --}}
     @if ($attendance->data->is_start && !$data['is_has_enter_today'])
-    <button class="btn btn-primary px-3 py-2 btn-sm fw-bold">Scan QRCode Masuk</button>
+    <button class="btn btn-primary px-3 py-2 btn-sm fw-bold" data-bs-toggle="modal"
+        data-bs-target="#qrcode-scanner-modal" data-is-enter="1">Scan QRCode Masuk</button>
     <a href="{{ route('home.permission', $attendance->id) }}" class="btn btn-info px-3 py-2 btn-sm fw-bold">Izin</a>
     @endif
 
@@ -22,7 +23,8 @@
 
     {{-- jika absen pulang sudah dimulai, dan karyawan sudah absen masuk dan belum absen pulang --}}
     @if ($attendance->data->is_end && $data['is_has_enter_today'] && $data['is_not_out_yet'])
-    <button class="btn btn-primary px-3 py-2 btn-sm fw-bold">Scan QRCode Pulang</button>
+    <button class="btn btn-primary px-3 py-2 btn-sm fw-bold" data-bs-toggle="modal"
+        data-bs-target="#qrcode-scanner-modal" data-is-enter="0">Scan QRCode Pulang</button>
     @endif
 
     {{-- sudah absen masuk dan absen pulang --}}
@@ -54,4 +56,30 @@
     @endif
 
     @endif
+
+    <div class="modal fade" id="qrcode-scanner-modal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Scan QRCode Absensi</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="reader"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+@push('script')
+<script src="{{ asset('html5-qrcode/html5-qrcode.min.js') }}"></script>
+<script>
+    const enterPresenceUrl = "{{ route('home.sendEnterPresenceUsingQRCode') }}";
+    const outPresenceUrl = "{{ route('home.sendOutPresenceUsingQRCode') }}";
+</script>
+<script type="module" src="{{ asset('js/home/qrcode.js') }}"></script>
+@endpush

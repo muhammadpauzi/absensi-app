@@ -25,3 +25,13 @@ export const builtValidationElement = (errors) => {
         .map((key) => `<li class="d-block">${errors[key][0]}</li>`)
         .join("");
 };
+
+export const toFormurlenconded = (data) => {
+    let formBody = [];
+    for (var property in data) {
+        var encodedKey = encodeURIComponent(property);
+        var encodedValue = encodeURIComponent(data[property]);
+        formBody.push(encodedKey + "=" + encodedValue);
+    }
+    return formBody.join("&");
+};
