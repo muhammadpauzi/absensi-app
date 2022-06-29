@@ -10,9 +10,10 @@
 
     {{-- jika belum absen dan absen masuk sudah dimulai --}}
     @if ($attendance->data->is_start && !$data['is_has_enter_today'])
-    <button class="btn btn-primary px-3 py-2 btn-sm fw-bold" data-bs-toggle="modal"
+    <button class="btn btn-primary px-3 py-2 btn-sm fw-bold d-block w-100 mb-2" data-bs-toggle="modal"
         data-bs-target="#qrcode-scanner-modal" data-is-enter="1">Scan QRCode Masuk</button>
-    <a href="{{ route('home.permission', $attendance->id) }}" class="btn btn-info px-3 py-2 btn-sm fw-bold">Izin</a>
+    <a href="{{ route('home.permission', $attendance->id) }}"
+        class="btn btn-info px-3 py-2 btn-sm fw-bold d-block w-100">Izin</a>
     @endif
 
     @if ($data['is_has_enter_today'])
@@ -23,7 +24,7 @@
 
     {{-- jika absen pulang sudah dimulai, dan karyawan sudah absen masuk dan belum absen pulang --}}
     @if ($attendance->data->is_end && $data['is_has_enter_today'] && $data['is_not_out_yet'])
-    <button class="btn btn-primary px-3 py-2 btn-sm fw-bold" data-bs-toggle="modal"
+    <button class="btn btn-primary px-3 py-2 btn-sm fw-bold d-block w-100" data-bs-toggle="modal"
         data-bs-target="#qrcode-scanner-modal" data-is-enter="0">Scan QRCode Pulang</button>
     @endif
 

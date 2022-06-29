@@ -3,7 +3,7 @@
 @section('content')
 <div class="container py-5">
     <div class="row">
-        <div class="col-md-7 mx-auto">
+        <div class="col-md-6 mb-3 mb-md-0">
             <div class="mb-2">
                 @include('partials.attendance-badges')
             </div>
@@ -26,6 +26,54 @@
                 @else
                 @include('home.partials.qrcode-presence')
                 @endif
+        </div>
+        <div class="col-md-6">
+            <h5 class="mb-3">Histori 30 Hari Terakhir</h5>
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Tanggal</th>
+                            <th scope="col">Jam Masuk</th>
+                            <th scope="col">Jam Pulang</th>
+                            <th scope="col">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($priodDate as $date)
+                        <tr>
+                            <th scope="row">{{ $loop->iteration }}</th>
+                            {{-- not presence / tidak hadir --}}
+                            @php
+                            $histo = $history->where('presence_date', $date)->first();
+                            @endphp
+                            @if (!$histo)
+                            <td>{{ $date }}</td>
+                            <td colspan="3">
+                                @if($date == now()->toDateString())
+                                <div class="badge text-bg-info">Belum Hadir</div>
+                                @else
+                                <div class="badge text-bg-danger">Tidak Hadir</div>
+                                @endif
+                            </td>
+                            @else
+                            <td>{{ $histo->presence_date }}</td>
+                            <td>{{ $histo->presence_enter_time }}</td>
+                            <td>{{ $histo->presence_out_time }}</td>
+                            <td>
+                                @if ($histo->is_permission)
+                                <div class="badge text-bg-warning">Izin</div>
+                                @else
+                                <div class="badge text-bg-success">Hadir</div>
+                                @endif
+                            </td>
+                            @endif
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>

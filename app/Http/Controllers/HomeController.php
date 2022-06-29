@@ -6,6 +6,7 @@ use App\Models\Attendance;
 use App\Models\Holiday;
 use App\Models\Permission;
 use App\Models\Presence;
+use Carbon\CarbonPeriod;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -53,12 +54,28 @@ class HomeController extends Controller
             ->where('holiday_date', now()->toDateString())
             ->first() : false;
 
-        // dd($data);
+        $history = Presence::query()
+            ->where('user_id', auth()->user()->id)
+            ->where('attendance_id', $attendance->id)
+            ->get();
+
+        // untuku melihat karyawan yang tidak hadir
+        $priodDate = CarbonPeriod::create($attendance->created_at->toDateString(), now()->toDateString())
+            ->toArray();
+
+        foreach ($priodDate as $i => $date) { // get only stringdate
+            $priodDate[$i] = $date->toDateString();
+        }
+
+        $priodDate = array_slice(array_reverse($priodDate), 0, 30);
+
         return view('home.show', [
             "title" => "Informasi Absensi Kehadiran",
             "attendance" => $attendance,
             "data" => $data,
-            "holiday" => $holiday
+            "holiday" => $holiday,
+            'history' => $history,
+            'priodDate' => $priodDate
         ]);
     }
 
