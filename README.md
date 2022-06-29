@@ -22,6 +22,7 @@ composer install
 # windows
 copy .env.example .env
 # unix (ubuntu, mac os and others)
+cp .env.example .env
 ```
 
 -   Configure .env file
