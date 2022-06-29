@@ -60,7 +60,12 @@
                             @else
                             <td>{{ $histo->presence_date }}</td>
                             <td>{{ $histo->presence_enter_time }}</td>
-                            <td>{{ $histo->presence_out_time }}</td>
+                            <td>@if($histo->presence_out_time)
+                                {{ $histo->presence_out_time }}
+                                @else
+                                <span class="badge text-bg-danger">Belum Absensi Pulang</span>
+                                @endif
+                            </td>
                             <td>
                                 @if ($histo->is_permission)
                                 <div class="badge text-bg-warning">Izin</div>
