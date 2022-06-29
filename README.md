@@ -1,5 +1,12 @@
 # **Absensi App**
 
+Features
+- CRUD Positions (CRUD Jabatan/Posisi)
+- CRUD Users (Admin, Operator and Users (Employees))
+- CRUD Holidays (CRUD Hari Libur)
+- CRUD Attendances (Can have multiple attendances and can using only button or presence using QRCode)
+- and more...
+
 ## How to install/use
 
 -   Clone this repository
