@@ -79,6 +79,10 @@
                     @if ($permission->is_accepted)
                     <td>
                         <span class="badge text-bg-success border-0">Sudah Diterima</span>
+                        <button class="badge text-bg-info border-0 permission-detail-modal-triggers"
+                            data-permission-id="{{ $permission->id }}" data-bs-toggle="modal"
+                            data-bs-target="#permission-detail-modal">Lihat
+                            Alasan</button>
                     </td>
                     @else
                     <td>
@@ -88,6 +92,10 @@
                             <input type="hidden" name="permission_date" value="{{ $permission->permission_date }}">
                             <button class="badge text-bg-primary border-0" type="submit">Terima</button>
                         </form>
+                        <button class="badge text-bg-info border-0 permission-detail-modal-triggers"
+                            data-permission-id="{{ $permission->id }}" data-bs-toggle="modal"
+                            data-bs-target="#permission-detail-modal">Lihat
+                            Alasan</button>
                     </td>
                     @endif
                 </tr>
@@ -98,4 +106,38 @@
     </div>
 </div>
 
+<div class="modal fade" id="permission-detail-modal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Detail Izin</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <ul>
+                    <li>Judul Izin : <span id="permission-title"></span></li>
+                    <li>Keterangan Izin : <p id="permission-description"></p>
+                    </li>
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                <form action="{{ route('presences.acceptPermission', $attendance->id) }}" method="post">
+                    @csrf
+                    <input type="hidden" name="user_id" value="{{ $permission->user->id }}">
+                    <input type="hidden" name="permission_date" value="{{ $permission->permission_date }}">
+                    <button class="btn btn-primary border-0" type="submit">Terima</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 @endsection
+
+@push('script')
+<script>
+    const permissionUrl = "{{ route('api.permissions.show') }}";
+</script>
+<script src="{{ asset('js/presences/permissions.js') }}"></script>
+@endpush

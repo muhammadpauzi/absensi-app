@@ -1,5 +1,4 @@
 <div>
-
     @if ($holiday)
     <div class="alert alert-success">
         <small class="fw-bold">Hari ini adalah hari libur.</small>
@@ -7,12 +6,11 @@
     @else
 
     {{-- jika tidak menggunakan qrcode (button) dan karyawan saat ini tidak menekan tombol izin --}}
-    @if (!$attendance->data->is_using_qrcode && !$data['is_there_permission'])
+    @if ($attendance->data->is_using_qrcode && !$data['is_there_permission'])
 
     {{-- jika belum absen dan absen masuk sudah dimulai --}}
     @if ($attendance->data->is_start && !$data['is_has_enter_today'])
-    <button class="btn btn-primary px-3 py-2 btn-sm fw-bold" wire:click="sendEnterPresence" wire:loading.attr="disabled"
-        wire:target="sendEnterPresence">Masuk</button>
+    <button class="btn btn-primary px-3 py-2 btn-sm fw-bold">Scan QRCode Masuk</button>
     <a href="{{ route('home.permission', $attendance->id) }}" class="btn btn-info px-3 py-2 btn-sm fw-bold">Izin</a>
     @endif
 
@@ -24,14 +22,14 @@
 
     {{-- jika absen pulang sudah dimulai, dan karyawan sudah absen masuk dan belum absen pulang --}}
     @if ($attendance->data->is_end && $data['is_has_enter_today'] && $data['is_not_out_yet'])
-    <button class="btn btn-primary px-3 py-2 btn-sm fw-bold" wire:click="sendOutPresence" wire:loading.attr="disabled"
-        wire:target="sendOutPresence">Pulang</button>
+    <button class="btn btn-primary px-3 py-2 btn-sm fw-bold">Scan QRCode Pulang</button>
     @endif
 
     {{-- sudah absen masuk dan absen pulang --}}
     @if ($data['is_has_enter_today'] && !$data['is_not_out_yet'])
     <div class="alert alert-success">
-        <small class="d-block fw-bold text-success">Anda sudah melakukan absen masuk dan absen pulang.</small>
+        <small class="d-block fw-bold text-success">Anda sudah melakukan absen masuk dan absen
+            pulang.</small>
     </div>
     @endif
 
@@ -56,5 +54,4 @@
     @endif
 
     @endif
-
 </div>
