@@ -2,7 +2,6 @@
     <form wire:submit.prevent="saveEmployees" method="post" novalidate>
         @include('partials.alerts')
         @foreach ($employees as $i => $employee)
-
         <div class="mb-3">
             <div class="w-100">
                 <div class="mb-3">
@@ -33,12 +32,12 @@
                     <x-form-label id="position_id{{ $i }}" label='Jabatan / Posisi Karyawaan {{ $i + 1 }}' />
                     <select class="form-select" aria-label="Default select example" name="position_id"
                         wire:model.defer="employees.{{ $i }}.position_id">
-                        <option selected disabled>-- Pilih Role --</option>
+                        <option selected disabled>-- Pilih Posisi --</option>
                         @foreach ($positions as $position)
                         <option value="{{ $position->id }}">{{ ucfirst($position->name) }}</option>
                         @endforeach
                     </select>
-                    <x-form-error key="employees.{{ $i }}.role_id" />
+                    <x-form-error key="employees.{{ $i }}.position_id" />
                 </div>
                 <div class="mb-3">
                     <x-form-label id="role_id{{ $i }}" label='Role {{ $i + 1 }}' />

@@ -17,16 +17,16 @@ class EmployeeCreateForm extends Component
 
     public function mount()
     {
-        $this->employees = [
-            ['name' => '', 'email' => '', 'phone' => '', 'password' => '', 'role_id' => User::USER_ROLE_ID, 'position_id' => '']
-        ];
-        $this->roles = Role::all();
         $this->positions = Position::all();
+        $this->roles = Role::all();
+        $this->employees = [
+            ['name' => '', 'email' => '', 'phone' => '', 'password' => '', 'role_id' => User::USER_ROLE_ID, 'position_id' => $this->positions->first()->id]
+        ];
     }
 
     public function addEmployeeInput(): void
     {
-        $this->employees[] = ['name' => '', 'email' => '', 'phone' => '', 'password' => '', 'role_id' => User::USER_ROLE_ID, 'position_id' => ''];
+        $this->employees[] = ['name' => '', 'email' => '', 'phone' => '', 'password' => '', 'role_id' => User::USER_ROLE_ID, 'position_id' => $this->positions->first()->id];
     }
 
     public function removeEmployeeInput(int $index): void
@@ -52,7 +52,6 @@ class EmployeeCreateForm extends Component
             'employees.*.role_id' => 'required|in:' . $roleIdRuleIn,
             'employees.*.position_id' => 'required|in:' . $positionIdRuleIn,
         ]);
-
         // cek apakah no. telp yang diinput unique
         $phoneNumbers = array_map(function ($employee) {
             return trim($employee['phone']);
