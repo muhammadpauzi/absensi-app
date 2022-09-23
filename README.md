@@ -39,7 +39,7 @@ php artisan key:generate
 php artisan migrate
 php artisan serve
 
-# lalu buka browser dengan halaman: http://localhost:8000/
+# lalu buka browser dengan url: http://localhost:8000/
 ```
 
 ## How to install/use (english)
