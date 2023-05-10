@@ -37,6 +37,7 @@ cp .env.example .env
 # lalu buat database baru dari phpmyadmin atau cli langsung juga bisa dengan nama sesuai DB_DATABASE yang ada di file .env
 php artisan key:generate
 php artisan migrate
+php artisan db:seed
 php artisan serve
 
 # lalu buka browser dengan url: http://localhost:8000/
@@ -80,6 +81,7 @@ cp .env.example .env
 ```sh
 php artisan key:generate
 php artisan migrate
+php artisan db:seed
 php artisan serve
 ```
 
